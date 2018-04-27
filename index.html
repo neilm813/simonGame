@@ -12,14 +12,6 @@
 
   <!-- START container -->
   <div id="main-container">
-
-    <header>
-      <!-- Score Board -->
-      <!-- <h3 id="game-stats" class="text-center">
-        <span>Round: {{ currentRound + 1 }}</span>
-        <span class="p-l-20px">Correct Count: {{ currentRoundCorrectCount }} of {{ simonSequence.length}}</span>
-      </h3> -->
-    </header>
     
     <div ng-repeat="(key, value) in coloredSquares"
       id="{{ key + '-square' }}"
@@ -27,6 +19,7 @@
       ng-click="squareClick(key)"
       class="square">
 
+      <!-- Scoreboard -->
       <h3 ng-if="key == 'green'" class="inline float-right p-r-15px text-white">
         Round: {{ currentRound + 1 }}
       </h3>
