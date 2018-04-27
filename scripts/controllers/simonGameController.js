@@ -55,14 +55,20 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
         $scope.currentRoundCorrectCount += 1;
   
         if ($scope.currentRoundCorrectCount == $scope.simonSequence.length) {
-  
-          addColorToSimonSequence();
-          $scope.currentRound += 1;
-          // Reset chosen sequence each round since they need to start over every round
-          chosenSequence = [];
-          // New round, reset the correct count
-          $scope.currentRoundCorrectCount = 0;
+          newRound();
         }
       }
+    }
+
+    function newRound() {
+      // New round, reset the currentRound count. Timeout so the currentRoundCorrect count can be seen briefly before the newRound wipes it
+      // Reset chosen sequence each round since the player must choose the full correct sequence again
+      chosenSequence = [];
+
+      $timeout(function() {
+        $scope.currentRoundCorrectCount = 0;
+        $scope.currentRound += 1;
+        addColorToSimonSequence();
+      }, 400);
     }
 });

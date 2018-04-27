@@ -8,6 +8,13 @@
   height: 100%;
 }
 
+#game-stats {
+  position: absolute;
+  z-index: 1000;
+  left: 43.5%;
+  color: white;
+ }
+
 #green-square {
   top: 0;  
   left: 0;
@@ -40,4 +47,24 @@
 
 .low-opacity {
   opacity: .3;
+}
+
+.p-l-15px {
+  padding-left: 15px;
+}
+
+.p-r-15px {
+  padding-right: 15px;
+}
+
+.text-white {
+  color: white;
+}
+
+.inline {
+  display: inline;
+}
+
+.float-right {
+  float: right;
 }
