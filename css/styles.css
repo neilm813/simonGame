@@ -2,4 +2,38 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  }
+}
+
+#main-container {
+  height: 100%;
+}
+
+#green-square {
+  top: 0;  
+  left: 0;
+  background: green;
+}
+
+#red-square {
+  top: 0;  
+  left: 50%;
+  background: red;
+}
+
+#yellow-square {
+  top: 50%;
+  left: 0;
+  background: yellow;
+}
+
+#blue-square {
+  top: 50%;
+  left: 50%;
+  background: blue;
+}
+
+.square {
+  position: fixed;
+  width: 50%;
+  height: 50%
+}
