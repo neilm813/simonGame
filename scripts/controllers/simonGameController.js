@@ -1,4 +1,4 @@
-angular.module("simonGame").controller("simonGameController", function ($scope) {
+angular.module("simonGame").controller("simonGameController", function ($scope, $timeout) {
 
     $scope.coloredSquares = {
       red: {
@@ -18,7 +18,13 @@ angular.module("simonGame").controller("simonGameController", function ($scope) 
     var chosenSequence = [];
 
     $scope.squareClick = function(color) {
+      var clickedSquare = $scope.coloredSquares[color];
+
+      clickedSquare.isLowOpacity = false;
       chosenSequence.push(color);
-      console.log(chosenSequence.toString());
+
+      $timeout(function() {
+        clickedSquare.isLowOpacity = true;
+      }, 200);
     }
 });

@@ -12,12 +12,14 @@
 
   <!-- START container -->
   <div id="main-container">
+
     <div ng-repeat="(key, value) in coloredSquares"
       id="{{ key + '-square' }}"
       ng-class="{'low-opacity': value.isLowOpacity}"
       ng-click="squareClick(key)"
-      class="square ">
+      class="square">
     </div>
+
   </div>
   <!-- END container -->
   <script src="./scripts/modules/app.js"></script>

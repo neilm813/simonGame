@@ -35,5 +35,9 @@
 .square {
   position: fixed;
   width: 50%;
-  height: 50%
+  height: 50%;
+}
+
+.low-opacity {
+  opacity: .3;
 }
