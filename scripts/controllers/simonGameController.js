@@ -15,8 +15,10 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
       }
     };
 
+    $scope.currentRoundCorrectCount = 0;
+    $scope.currentRound = 0;
+    $scope.simonSequence = [];
     var chosenSequence = [];
-    var simonSequence = [];
     var possibleColors = Object.keys($scope.coloredSquares);
     addColorToSimonSequence();
 
@@ -26,8 +28,8 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
 
     function addColorToSimonSequence() {
       var randomIdx = randomIntFromInterval(0, possibleColors.length - 1);
-      simonSequence.push(possibleColors[randomIdx]);
-      console.log(simonSequence);
+      $scope.simonSequence.push(possibleColors[randomIdx]);
+      console.log($scope.simonSequence.toString());
     }
 
     $scope.squareClick = function(color) {
@@ -39,5 +41,28 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
       $timeout(function() {
         clickedSquare.isLowOpacity = true;
       }, 200);
+
+      verifyColorChoice();
+    }
+
+    function verifyColorChoice() {
+      if (chosenSequence[$scope.currentRoundCorrectCount] != $scope.simonSequence[$scope.currentRoundCorrectCount]) {
+  
+        alert("All Games Must Meet Their Inevitable Demise");
+        // reset game
+      }
+      else {
+        $scope.currentRoundCorrectCount += 1;
+  
+        if ($scope.currentRoundCorrectCount == $scope.simonSequence.length) {
+  
+          addColorToSimonSequence();
+          $scope.currentRound += 1;
+          // Reset chosen sequence each round since they need to start over every round
+          chosenSequence = [];
+          // New round, reset the correct count
+          $scope.currentRoundCorrectCount = 0;
+        }
+      }
     }
 });
