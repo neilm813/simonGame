@@ -21,14 +21,38 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
     var isDisplaySimonSequenceInProgress = true;
     var chosenSequence = [];
     var possibleColors = Object.keys($scope.coloredSquares);
-    addColorToSimonSequence();
+    var additionalReadyMessages = ['Being ready is non-negotiable', 'Get ready to be ready', 'Readiness is next to godliness', 'You will never fully be ready. Ready to never be fully ready?'];
+    var readyCounter = 0;
+    startGame();
 
+    function startGame() {
+      isReady = confirm("Ready?");
+  
+      while (isReady == false) {
+  
+        isReady = confirm(additionalReadyMessages[readyCounter]);
+        if (readyCounter < additionalReadyMessages.length - 1) {
+          readyCounter += 1;
+        }
+      }
+      resetGameState();
+      addColorToSimonSequence();
+    }
+
+    function resetGameState() {
+      $scope.currentRound = 0;
+      $scope.currentRoundCorrectCount = 0;
+      chosenSequence = [];
+      $scope.simonSequence = [];
+      readyCounter = 0;
+    }
+  
     function randomIntFromInterval (min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     function addColorToSimonSequence() {
-      
+
       var randomIdx = randomIntFromInterval(0, possibleColors.length - 1);
       $scope.simonSequence.push(possibleColors[randomIdx]);
       
@@ -51,9 +75,10 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
         $timeout(function() {
           // un-highlight the clicked square
           clickedSquare.isLowOpacity = true;
+
+          // needs to be inside the timeout so the displaySimonSequence doesn't start before the clicked square is unhighlighted
+          verifyColorChoice();
         }, 200);
-  
-        verifyColorChoice();
       }
     }
 
@@ -62,6 +87,7 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
   
         alert("All Games Must Meet Their Inevitable Demise");
         // reset game
+        startGame();
       }
       else {
         $scope.currentRoundCorrectCount += 1;
@@ -98,11 +124,17 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
       }
 
       var currentSquare = $scope.coloredSquares[sequenceCopy.splice(0, 1)];
-      currentSquare.isLowOpacity = false;
 
+      currentSquare.isLowOpacity = false;
+      
       $timeout(function () {
         currentSquare.isLowOpacity = true;
-        $timeout(function () { displaySimonSequence(sequenceCopy) }, 300);
-      }, 600);
+
+        // In case the same square is highlighted 2x in a row, otherwise it will look like 1 highlight
+        $timeout(function () { 
+          displaySimonSequence(sequenceCopy) 
+        }, 200);
+        // how long square stays highlighted
+      }, 400);
     }
 });
