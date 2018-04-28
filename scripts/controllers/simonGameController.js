@@ -18,6 +18,7 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
     $scope.currentRoundCorrectCount = 0;
     $scope.currentRound = 0;
     $scope.simonSequence = [];
+    var isDisplaySimonSequenceInProgress = true;
     var chosenSequence = [];
     var possibleColors = Object.keys($scope.coloredSquares);
     addColorToSimonSequence();
@@ -27,22 +28,33 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
     }
 
     function addColorToSimonSequence() {
+      
       var randomIdx = randomIntFromInterval(0, possibleColors.length - 1);
       $scope.simonSequence.push(possibleColors[randomIdx]);
-      console.log($scope.simonSequence.toString());
+      
+      // timeout in case the first square of simonSequence is the same square the user clicked on
+      // to prevent two highlights looking like 1 highlight
+      $timeout(function() {
+        displaySimonSequence($scope.simonSequence);
+      }, 400);
     }
 
     $scope.squareClick = function(color) {
-      var clickedSquare = $scope.coloredSquares[color];
+      if (!isDisplaySimonSequenceInProgress) {
 
-      clickedSquare.isLowOpacity = false;
-      chosenSequence.push(color);
-
-      $timeout(function() {
-        clickedSquare.isLowOpacity = true;
-      }, 200);
-
-      verifyColorChoice();
+        var clickedSquare = $scope.coloredSquares[color];
+  
+        // highlight the clicked square
+        clickedSquare.isLowOpacity = false;
+        chosenSequence.push(color);
+  
+        $timeout(function() {
+          // un-highlight the clicked square
+          clickedSquare.isLowOpacity = true;
+        }, 200);
+  
+        verifyColorChoice();
+      }
     }
 
     function verifyColorChoice() {
@@ -70,5 +82,27 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
         $scope.currentRound += 1;
         addColorToSimonSequence();
       }, 400);
+    }
+
+    function displaySimonSequence(simonSequence) {
+      
+      isDisplaySimonSequenceInProgress = true;
+
+      // copy to break reference so simonSequence array is not affected
+      var sequenceCopy = angular.copy(simonSequence);
+
+      if (sequenceCopy.length == 0) {
+
+        isDisplaySimonSequenceInProgress = false;
+        return;
+      }
+
+      var currentSquare = $scope.coloredSquares[sequenceCopy.splice(0, 1)];
+      currentSquare.isLowOpacity = false;
+
+      $timeout(function () {
+        currentSquare.isLowOpacity = true;
+        $timeout(function () { displaySimonSequence(sequenceCopy) }, 300);
+      }, 600);
     }
 });
