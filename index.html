@@ -12,18 +12,18 @@
 
   <!-- START container -->
   <div id="main-container">
-    
-    <div ng-repeat="(key, value) in coloredSquares"
-      id="{{ key + '-square' }}"
-      ng-class="{'low-opacity': value.isLowOpacity}"
-      ng-click="squareClick(key)"
+
+    <div ng-repeat="square in coloredSquares"
+      id="{{ square.color  + '-square' }}"
+      ng-class="{'low-opacity': square.isLowOpacity}"
+      ng-click="squareClick(square)"
       class="square">
 
       <!-- Scoreboard -->
-      <h3 ng-if="key == 'green'" class="inline float-right p-r-15px text-white">
+      <h3 ng-if="square.color == 'green'" class="inline float-right p-r-15px text-white">
         Round: {{ currentRound + 1 }}
       </h3>
-      <h3 ng-if="key == 'red'" class="inline p-l-15px text-white">
+      <h3 ng-if="square.color == 'red'" class="inline p-l-15px text-white">
         Correct Count: {{ currentRoundCorrectCount }} of {{ simonSequence.length}}
       </h3>
     </div>
