@@ -58,7 +58,7 @@ angular.module("simonGame").controller("simonGameController", function ($scope, 
           }
           resetGameState();
           addColorToSimonSequence();
-      }, 200);
+      });
     }
 
     function resetGameState() {
